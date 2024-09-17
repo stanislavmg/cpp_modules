@@ -1,86 +1,112 @@
-#include <array>
 #include <iostream>
+#include <iomanip>
 #include <string>
 
 class Contact
 {
-	std::string	FirstName;
-	std::string	LastName;
-	std::string	NickName;
-	std::string	PhoneNum;
-	std::string	Secret;
+	static const int size = 5;
+	std::string	 data[size];
+	std::string	&resize(std::string &str);
 public:
-	Contact();
-	Contact(std::string fname, std::string lname, std::string pnum, std::string secret);
-	~Contact() {};
-	int	operator==();
+	void	display(int index) const;
+	void	init(void);
 };
 
-Contact::Contact(): FirstName(), LastName(), NickName(), PhoneNum(), Secret()
+std::string	&Contact::resize(std::string &str)
 {
-	std::cout << "Enter First name: " << std::endl;
-	std::cin.getline(FirstName);
-	std::cout << "Last name: " << std::endl;
-	std::cin.getline(LastName);
-	std::cout << "Nick name: " << std::endl;
-	std::cin.getline(NickName);
-	std::cout << "Phone number: " << std::endl;
-	std::cin.getline(PhoneNum);
-	std::cout << "Your secret: " << std::endl;
-	std::cin.getline(Secret);
+	if (str.size() > 10)
+	{
+		str.resize(10);
+		str.back() = '.';
+	}
+	return (str);
 }
 
-int	Contact::operator==(Contact &rhs)
+void	Contact::init()
 {
-	return
-	(
-		this.FirstName == rhs.FirstName && this.LastName == rhs.LastName
-		this.NickName == rhs.NickName && this.
-	)
+	int i = 0;
+	std::string	input;
+
+	while (i < size) 
+	{
+		std::getline(std::cin, data[i]);
+		data[i].erase(data[i].find(' '));
+		//while (std::isspace(data[i].begin()))
+				//data[i].
+		if (!data[i].size())
+		{
+			std::cout << "Field shouldn't be emty\nPlease try again" << std::endl;
+			continue;
+		}
+		resize(data[i]);
+		i++;
+	}
+}
+
+void	Contact::display(int index) const
+{
+	int i = -1;
+
+	std::cout.setf(std::ios::right);
+	std::cout << std::setw(8) << std::right << index << " | ";
+	while (++i < size)
+		std::cout << std::setw(8) << std::right << data[i] << " | ";
+	std::cout << std::endl;
 }
 
 class PhoneBook
 {
-	std::array<Contact &, 8> list;
+	static const int	max = 8;
+	Contact 			list[max];
+	int					index;
 public:
-	PhoneBook(): list() {};
-	~PhoneBook() {};
-	void	add(Contact new_contact);
-	void	search(Contact target);
+	PhoneBook(){ index = 0; }
+	void			add(void);
+	void			search(void);
 };
 
-void	PhoneBook::add(Contact &new_contact)
+void	PhoneBook::add(void)
 {
-	list[list.size() - 1] = new_contact;
+	list[index].init();
+	if (index + 1 < max)
+		index++;
 }
 
-void	PhoneBook::search(Contact target)
+void	PhoneBook::search(void)
 {
-	int size = list.size();
-	int	i = -1;
-
-	for (++i < size)
-	{
-		if (list[i] == target)
-			list[i].display();
-	}
+	int		input;
+	char	ch;
+	
+	std::cout << "Enter index less than 8: " << std::endl;
+	std::cin >> input;
+	
+	while (std::cin.get(ch) && ch != '\n');
+	if (input >= 0 && input < max)
+		list[input].display(input);
+	else
+		std::cout << "Incorrect index" << std::endl;
 }
 
 int	main(void)
 {
-	PhoneBook	pb();
+	PhoneBook	pb;
 	std::string	input;
 
 	while (1)
 	{
 		std::cout << "Enter phone book operation:" << std::endl;
-		std::cout << "ADD for add new contact" << std::endl;
-		sdt::cout << "EXIT for exit" << std::endl;
-		std::cin.getline(input);
-		if(input == "ADD")
-			pb.add(Contact::Contact());
-		else if (input == "EXIT")
+		std::cout << "1. ADD" << std::endl;
+		std::cout << "2. SEARCH" << std::endl;
+		std::cout << "3. EXIT" << std::endl;
+		std::getline(std::cin, input);
+		if(input == "1")
+			pb.add();
+		else if (input == "2")
+			pb.search();
+		else if (input == "3")
 			break ;
+		else
+			std::cout << "Incorrect option. Try again." << std::endl;
 	}
 	return (0);
 }
