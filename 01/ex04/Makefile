@@ -1,7 +1,7 @@
-NAME =		Zombie
+NAME =		string
 CC =		c++
 CFLAGS =	-Wall -Wextra -Werror -std=c++98
-SRC =		main.cpp Zombie.cpp
+SRC =		main.cpp
 OBJ =		$(SRC:%.c=%.o)
 
 all: $(NAME)
