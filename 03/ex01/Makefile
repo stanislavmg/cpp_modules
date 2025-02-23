@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98
-TARGET = fixed
-SRCS = main.cpp Fixed.cpp
+TARGET = scavtrap
+SRCS = main.cpp ClapTrap.cpp ScavTrap.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 all: $(TARGET)
